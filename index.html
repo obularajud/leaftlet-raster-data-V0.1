@@ -1,0 +1,741 @@
+<html>
+<head></head>
+<body>
+
+<center><h2>Maping Adngal To Land Place</h2></center>
+<center>
+    <div id="mapdiv"></div>
+    <div class="coordinate"></div>
+    </center>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+
+<style>
+    .leaflet-container {  /* all maps */
+        width:  1000px;
+        height: 700px;
+        }
+
+    #t01{
+        border: 1px solid black;
+        border-collapse: collapse;
+        text-align: left;
+        }
+
+    body { margin:0; padding:0; }
+    /* remove label background elements */
+    .leaflet-tooltip.my-labels {
+        background-color: transparent;
+        border: transparent;
+        box-shadow: none;
+        font-weight: bold;
+        font-size: 20px;
+        }
+
+    .leaflet-tooltip.my-labels {
+        background-color: transparent;
+        border: transparent;
+        box-shadow: none;
+        }
+
+    .text-below-marker {
+        min-width: 100px;
+        left: -50px;
+        text-align: center;
+        min-height: 1.2em;
+        border: 1px solid red;
+        }
+    </style>
+
+
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+       integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+       crossorigin=""></script>
+
+    <script type="application/javascript" src="Geoserver/L.Geoserver.js"></script>
+
+
+     <!--leaflet measure  -->
+    <script src='leaflet-measure.js'></script>
+
+//    <!-- leaflet measure  -->
+    <link rel="stylesheet" href="leaflet-measure.css">
+
+<!--//    {#    Marker cluster js #}-->
+
+    <script type="application/javascript" src="Leaflet.markercluster-1.4.1/dist/leaflet.markercluster.js"></script>
+
+    <!--{#    Marker cluster css #}-->
+    <link rel="stylesheet" href="Leaflet.markercluster-1.4.1/dist/MarkerCluster.css"/>
+    <link rel="stylesheet" href="Leaflet.markercluster-1.4.1/dist/MarkerCluster.Default.css"/>
+
+    <!--{#    location control css #}-->
+    <link rel="stylesheet" href="locatecontrol/L.Control.Locate.min.css"/>
+    <script type="application/javascript" src="locatecontrol/L.Control.Locate.min.js"></script>
+
+    <script type="application/javascript" src="leafletjs/KML.js"></script>
+
+
+
+
+
+<!--{#        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.css"/>#}-->
+<!--{#        <link rel="stylesheet" href="{% static 'src/leaflet.css'%}">#}-->
+         <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+           integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+           crossorigin=""/>
+
+        <link rel="stylesheet" href="src/css/bootstrap.css">
+        <link rel="stylesheet" href="src/plugins/L.Control.Pan.css">
+        <link rel="stylesheet" href="src/plugins/L.Control.MousePosition.css">
+        <link rel="stylesheet" href="src/plugins/Leaflet.PolylineMeasure.css">
+        <link rel="stylesheet" href="src/plugins/L.Control.Sidebar.css">
+        <link rel="stylesheet" href="src/plugins/leaflet-opencage/src/css/L.Control.OpenCageSearch.css">
+<!--{#        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/0.4.2/leaflet.draw.css"/>#}-->
+        <!--<link rel="stylesheet" href="src/css/fontawesome.min.css">-->
+        <link rel="stylesheet" href="src/css/fontawesomeall.css">
+
+        <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
+        <link rel="stylesheet" href="src/plugins/leaflet.awesome-markers.css">
+        <link rel="stylesheet" href="src/plugins/easy-button.css">
+<!--{#        <link rel="stylesheet" href="{% static 'src/plugins/leaflet-styleeditor/css/Leaflet.StyleEditor.css'%}">#}-->
+<!--{#        <link rel="stylesheet" href="{% static 'src/plugins/leaflet-draw/leaflet.draw.css'%}">#}-->
+        <!-- leaflet measure  -->
+        <link rel="stylesheet" href="src/plugins/leaflet-measure.css">
+        <!--&lt;!&ndash;{#    Marker cluster css #}&ndash;&gt;-->
+        <link rel="stylesheet" href="src/plugins/Leaflet.markercluster-1.4.1/dist/MarkerCluster.css"/>
+        <link rel="stylesheet" href="src/plugins/Leaflet.markercluster-1.4.1/dist/MarkerCluster.Default.css"/>
+
+
+        <!--{#    location control css #}-->
+        <link rel="stylesheet" href="src/plugins/locatecontrol/L.Control.Locate.min.css"/>
+
+
+
+
+
+<!--{#        <script src="{% static 'src/leaflet-src.js' %}"></script>#}-->
+<!--{#    <script type="application/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.js"></script>#}-->
+<!--{#        <script src="http://cdn.leafletjs.com/leaflet-0.7/leaflet.js"></script>#}-->
+<!--{#        <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/0.4.2/leaflet.draw.js"></script>#}-->
+<!--{#        <script src="{% static 'src/jquery-3.4.1.min.js'%}"></script>#}-->
+<!--{#        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>#}-->
+
+        <script src="src/plugins/L.Control.Pan.js"></script>
+        <script src="src/plugins/leaflet.ajax.js"></script>
+        <script src="src/plugins/leaflet.ajax.min.js"></script>
+        <script src="src/plugins/L.Control.MousePosition.js"></script>
+        <script src="src/plugins/Leaflet.PolylineMeasure.js"></script>
+        <script src="src/plugins/L.Control.Sidebar.js"></script>
+        <script src="src/plugins/leaflet-opencage/src/js/L.Control.OpenCageSearch.js"></script>
+        <script src="src/plugins/leaflet-providers.js"></script>
+<!--{#        <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/0.4.2/leaflet.draw.js"></script>#}-->
+<!--{#        <script src="{% static 'src/plugins/leaflet-draw/Leaflet.Draw.Event.js'%}"></script>#}-->
+<!--{#        <script src="{% static 'src/plugins/leaflet-draw/Leaflet.draw.js'%}"></script>#}-->
+        <!--<script src="src/plugins/ajax.js"></script>-->
+        <script src="src/plugins/leaflet.awesome-markers.min.js"></script>
+        <script src="src/plugins/easy-button.js"></script>
+        <script src="src/plugins/leaflet-styleeditor/javascript/Leaflet.StyleEditor.js"></script>
+        <script src="src/plugins/leaflet-styleeditor/javascript/StyleForm.js"></script>
+
+        <!--Bigin leaflet.Drow-->
+        <script src="src/plugins/leaflet-draw/Toolbar.js"></script>
+        <script src="src/plugins/leaflet-draw/Tooltip.js"></script>
+
+        <!-- leaflet measure  -->
+        <script src="src/plugins/leaflet-measure.js"></script>
+        <!--{#    Marker cluster js #}-->
+        <script type="application/javascript" src="src/plugins/Leaflet.markercluster-1.4.1/dist/leaflet.markercluster.js"></script>
+        <script type="application/javascript" src="src/plugins/locatecontrol/L.Control.Locate.min.js"></script>
+
+
+        <!-- nepal data  -->
+        <script src="data/js/adangalall.js"></script>
+        <script src="data/js/adangalffmbpoly.js"></script>
+        <!--<script src="data/js/adangalfmbpoint.js"></script>-->
+
+
+    <script>
+
+        var aplandfmbpoint;
+        var marker_group;
+        var currentlocaton;
+        var measureControl;
+        var google_Sat;
+        var google_Streets;
+        var adangauserlink;
+        var aplandfmbpoly;
+        var aplands;
+        var mymap;
+        var lyrOSM;
+        var lyrWatercolor;
+        var lyrTopo;
+        var lyrImagery;
+        var lyrOutdoors;
+        var fgpDrawnItems;
+        var ctlAttribute;
+        var ctlScale;
+        var ctlPan;
+        var ctlMouseposition;
+        var ctlMeasure;
+        var ctlSearch;
+        var ctlLayers;
+        var ctlDraw;
+        var objBasemaps;
+        var objOverlays;
+        var icnEagleActive;
+        var icnEagleInactive;
+        var ctlSidebar;
+        var ctlEasybutton;
+        var adangalffmbpoly;
+        var adangalfmbpoint;
+
+
+
+    $(document).ready(function(){
+
+        mymap = L.map('mapdiv', {center:[15.9129, 79.7400], zoom:7,zoomControl:false, attributionContol:false});
+
+
+
+
+
+            var visible;
+            mymap.on('mousemove', function (e) {
+                console.log(e)
+                $('.coordinate').html("lat: " + e.latlng.lat + " long: " + e.latlng.lng)
+                })
+
+
+            //  **************** jQuery Event Handlers *********************
+
+            $('#btnform1610202001').click(function(){
+                console.log('----------------------------------');
+                $('#div1610202001').toggle();
+                console.log('**********************************');
+                })
+
+            $('#btnform1610202002').click(function(){
+                console.log('----------------------------------');
+                $('#div1610202002').toggle();
+                console.log('**********************************');
+                })
+
+//{#            $('#aplandfmb').on('change', function(){#}
+//{#                marker_group.clearLayers();#}
+//{#                aplandfmbpoint.refresh();#}
+//{#                aplandfmbpoly.refresh();#}
+//{#                });#}
+
+            $('#adangaluserfilter').on('change', function(){
+                marker_group.clearLayers();
+                adangauserlink.refresh();
+                adangalffmbpoly.refresh();
+                adangalfmbpoint.refresh();
+                //adding new is required
+
+                });
+
+            //  ************ Map Initialization **********************************
+
+
+            icnEagleActive = L.icon({iconUrl:'img/nest2.png', iconSize:[40,40], iconAnchor:[20,24]});
+            icnEagleInactive = L.icon({iconUrl:'img/nest.png', iconSize:[40,40], iconAnchor:[20,24]});
+
+            //mymap = L.map('mapdiv', {center:[15.9129, 79.7400], zoom:7,zoomControl:false, attributionContol:false});
+
+
+            ctlPan = L.control.pan().addTo(mymap);
+
+            measureControl=L.control.measure({ position: 'topleft',activeColor: 'red',completedColor: 'red'});
+            measureControl.addTo(mymap);
+
+
+            currentlocaton = L.control.locate({strings: {title: "Show me where I am, yo!"},
+                locateOptions: {enableHighAccuracy: true}
+            }).addTo(mymap);
+
+
+            marker_group =new L.MarkerClusterGroup();
+
+
+            ctlMeasure = L.control.polylineMeasure().addTo(mymap);
+
+
+
+            ctlSearch = L.Control.openCageSearch({key:'a83040d70b4c4b9dbaba7e874d68b5f8', limit:10}).addTo(mymap);
+
+            ctlAttribute = L.control.attribution({position:'bottomright'});
+            ctlAttribute.addTo(mymap);
+            ctlAttribute.addAttribution('OSM');
+            ctlAttribute.addAttribution('<a href="https://github.com/ashok-bidani">Github</a>');
+
+            ctlScale = L.control.scale({position:'bottomleft', metric:false, maxWidth:200}).addTo(mymap);
+
+            ctlMouseposition = L.control.mousePosition().addTo(mymap);
+
+
+            //  ************ Layer Initialization ******************************
+
+            google_Sat = L.tileLayer('http://{s}.google.com/vt/lyrs=s&x={x}&y={y}&z={z}', {'maxZoom': '20','minZoom': '2','subdomains': ['mt0', 'mt1', 'mt2', 'mt3']});
+            google_Streets= L.tileLayer('http://{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}',{'maxZoom': '20','minZoom': '2','subdomains': ['mt0', 'mt1', 'mt2', 'mt3']}).addTo(mymap),
+
+//                    mymap.addLayer(google_Streets);
+
+            fgpDrawnItems = new L.FeatureGroup();
+            fgpDrawnItems.addTo(mymap);
+
+
+            var aplands = L.tileLayer.wms('https://apsac.ap.gov.in/gisserver/services/REVENUE/cadastral_ap_cache/MapServer/WMSServer?', {
+                layers: '0',
+                format: 'image/png',
+                transparent: true,
+                srs:'EPSG:3857',
+                version:'1.3.0'
+                }).addTo(mymap);
+
+//{#            var aplandfmbpoly= new L.GeoJSON.AJAX("https://192.168.43.179:8005/fmblink/", {#}
+//{#                filter:filterfmbpoly,style:stylefmbpoly#}
+//{#                }).addTo(detail.map);#}
+//{##}
+//{#            aplandfmbpoly.on('data:loaded',function(){#}
+//{#                detail.map.fitBounds(aplandfmbpoly.getBounds());#}
+//{#                })#}
+//
+//
+//            mymap.removeLayer(marker_group);
+//{#            var aplandfmbpoint= new L.GeoJSON.AJAX("https://192.168.43.179:8005/fmblink01/", {#}
+//{#                pointToLayer:returnadngalMarker, filter:filterfmbpoint#}
+//{#                }).addTo(detail.map);#}
+
+
+//{#            aplandfmbpoint.on('data:loaded',function(){#}
+//{#                detail.map.fitBounds(aplandfmbpoint.getBounds());#}
+//{#                marker_group.addTo(detail.map)#}
+//{#                });#}
+
+
+
+            ctlSidebar= L.control.sidebar('side-bar').addTo(mymap);
+            ctlEasybutton= L.easyButton('fa fa-exchange',function(){
+                ctlSidebar.toggle();
+                }).addTo(mymap);
+
+
+//            var adangauserlink= new L.GeoJSON.AJAX("https://192.168.43.179:8005/adangalall/", {
+
+            var adangauserlink = L.geoJSON(adangalall, {
+//            var adangauserlink = L.geoJSON('data/geojson/adangalall.geojson', {
+                filter:filteradangauser
+                }).addTo(mymap);
+
+            adangauserlink.on('data:loaded',function(){
+
+                mymap.fitBounds(adangauserlink.getBounds());
+                });
+
+
+//            //var adangalffmbpoly= new L.GeoJSON.AJAX(window.location.protocol+"//"+window.location.host+"/adangalffmbpoly/", {
+//            var adangalffmbpoly= new L.geoJSON(adangalffmbpoly, {
+//                filter:filteradangalffmbpoly
+//                }).addTo(mymap);
+//
+//            adangalffmbpoly.on('data:loaded',function(){
+//
+//                mymap.fitBounds(adangalffmbpoly.getBounds());
+//                });
+
+
+
+//            var adangalfmbpoint= new L.GeoJSON.AJAX(window.location.protocol+"//"+window.location.host+"/adangalfmbpoint/", {
+                var adangalfmbpoint= new L.geoJSON(adangalfmbpoint, {
+                pointToLayer:returnadngalfmbpoint,filter:filteradangalfmbpoint
+                }).addTo(mymap);
+
+            adangalfmbpoint.on('data:loaded',function(){
+
+                mymap.fitBounds(adangalfmbpoint.getBounds());
+                marker_group.addTo(mymap)
+
+
+                });
+
+
+
+            //  ************** Setup Layer Control **************************
+
+
+            objBasemaps = {
+                "google_Streets":google_Streets,
+                "google_Sat":google_Sat
+                };
+
+            objOverlays = {
+//                "aplandfmbpoint":aplandfmbpoint,
+//                "aplandfmbpoly":aplandfmbpoly,
+                "aplands":aplands
+//                "Drawn Items":fgpDrawnItems
+            };
+
+//            ctlLayers = L.control.layers(objBasemaps).addTo(mymap);
+            ctlLayers = L.control.layers(objBasemaps, objOverlays).addTo(mymap);
+
+
+
+//            }, false);
+
+
+
+
+
+
+        });
+
+
+        //  **************** adngal Functions *********************
+
+        function returnadngalMarker(json, latlng){
+            var att=json.properties;
+            if(att.pata=='1'){
+                var clrNest='Green';
+                marker_group.addLayer(L.marker(latlng));
+                }
+
+            else if(att.govt=='1'){
+                var clrNest='red';
+                marker_group.addLayer(L.marker(latlng));
+                }
+            else if(att.dot=='1'){
+                var clrNest='yellow';
+                marker_group.addLayer(L.marker(latlng));
+                }
+            else {
+                var clrNest='lightblue';
+                marker_group.addLayer(L.marker(latlng));
+                }
+
+//            marker_group.addLayer(L.marker(latlng));
+
+            return L.circleMarker(latlng,{radius:10,color:clrNest}).bindTooltip("tsurveyno : "+att.tsurveyno+"<br>pata : "+att.pata+"<br>govt : "+att.govt+"<br>dot : "+att.dot);
+            }
+
+
+        function returnadngalfmbpoint(json, latlng){
+            console.log(json);
+            var att=json.properties;
+            if(att.pata=='1'){
+                var clrNest='Green';
+                marker_group.addLayer(L.marker(latlng));
+                }
+
+            else if(att.govt=='1'){
+                var clrNest='red';
+                marker_group.addLayer(L.marker(latlng));
+                }
+            else if(att.dot=='1'){
+                var clrNest='yellow';
+                marker_group.addLayer(L.marker(latlng));
+                }
+            else {
+                var clrNest='lightblue';
+                marker_group.addLayer(L.marker(latlng));
+                }
+
+//            marker_group.addLayer(L.marker(latlng));
+
+            return L.circleMarker(latlng,{radius:10,color:clrNest}).bindTooltip("tsurveyno : "+att.tsurveyno+"<br>pata : "+att.pata+"<br>govt : "+att.govt+"<br>dot : "+att.dot);
+            }
+
+
+
+
+
+
+        function filterfmbpoint(json){
+            var att=json.properties;
+            var optFilter=$('#aplandfmb').val();
+            if(optFilter=='ALL'){
+                return true;
+                }
+            else if(optFilter=='patatrue'){
+                return (att.pata=='1');
+                }
+            else if(optFilter=='govttrue'){
+                return (att.govt=='1');
+                }
+            else if(optFilter=='dottrue'){
+                return (att.dot=='1');}
+            }
+
+
+        function filterfmbpoly(json){
+            var att=json.properties;
+            var optFilter=$('#aplandfmb').val();
+            if(optFilter=='ALL'){
+                return true;
+                }
+
+            else if(optFilter=='patatrue'){
+                return (att.pata=='1');
+                }
+
+            else if(optFilter=='govttrue'){
+                return (att.govt=='1');
+                }
+            else if(optFilter=='dottrue'){
+                return (att.dot=='1');}
+            }
+
+        function stylefmbpoly(feature){
+            var att=feature.properties;
+            var optFilter=$('#aplandfmb').val();
+
+            if(att.pata=='1'){
+                var clrNest='green';
+                }
+
+            else if(att.govt=='1'){
+                var clrNest='red';
+                }
+
+            else if(att.dot=='1'){
+                var clrNest='yellow';
+                }
+
+            else {
+                var clrNest='lightblue';
+                }
+            return  {color:clrNest};
+            }
+
+
+        function filteradangauser(json){
+            var att=json.properties;
+            var optFilter=$('#adangaluserfilter').val();
+
+
+            if(optFilter=='ALL'){
+                return true;
+                }
+
+//{#            <option value="{{ obj.username }}">{{ obj.username }}</option>#}
+//
+//
+//            else if(optFilter=='{{ obj.username }}'){
+//                return (att.user=='{{ obj.username }}');
+//                }
+//            {% endfor %}
+
+            else if(optFilter=='aruna'){
+                return (att.user=='aruna');
+                }
+
+            else if(optFilter=='narayana'){
+                return (att.user=='narayana');
+                }
+            }
+
+
+
+        function filteradangalffmbpoly(json){
+            var att=json.properties;
+            var optFilter=$('#adangaluserfilter').val();
+
+
+            if(optFilter=='ALL'){
+                return true;
+                }
+
+
+            }
+
+
+
+        function filteradangalfmbpoint(json){
+            var att=json.properties;
+            var optFilter=$('#adangaluserfilter').val();
+
+
+            if(optFilter=='ALL'){
+                return true;
+                }
+
+
+
+//            else if(optFilter=='{{ obj.username }}'){
+//                return (att.user=='{{ obj.username }}');
+//                }
+
+
+            }
+
+
+
+
+
+
+
+
+
+
+
+        //  **************** adngal Functions *********************
+
+        function returnadngalMarker(json, latlng){
+            var att=json.properties;
+            if(att.pata=='1'){
+                var clrNest='Green';
+                marker_group.addLayer(L.marker(latlng));
+                }
+
+            else if(att.govt=='1'){
+                var clrNest='red';
+                marker_group.addLayer(L.marker(latlng));
+                }
+            else if(att.dot=='1'){
+                var clrNest='yellow';
+                marker_group.addLayer(L.marker(latlng));
+                }
+            else {
+                var clrNest='lightblue';
+                marker_group.addLayer(L.marker(latlng));
+                }
+
+//            marker_group.addLayer(L.marker(latlng));
+
+            return L.circleMarker(latlng,{radius:10,color:clrNest}).bindTooltip("tsurveyno : "+att.tsurveyno+"<br>pata : "+att.pata+"<br>govt : "+att.govt+"<br>dot : "+att.dot);
+            }
+
+
+
+
+
+        function filterfmbpoint(json){
+            var att=json.properties;
+            var optFilter=$('#aplandfmb').val();
+            if(optFilter=='ALL'){
+                return true;
+                }
+            else if(optFilter=='patatrue'){
+                return (att.pata=='1');
+                }
+            else if(optFilter=='govttrue'){
+                return (att.govt=='1');
+                }
+            else if(optFilter=='dottrue'){
+                return (att.dot=='1');}
+            }
+
+
+        function filterfmbpoly(json){
+            var att=json.properties;
+            var optFilter=$('#aplandfmb').val();
+            if(optFilter=='ALL'){
+                return true;
+                }
+
+            else if(optFilter=='patatrue'){
+                return (att.pata=='1');
+                }
+
+            else if(optFilter=='govttrue'){
+                return (att.govt=='1');
+                }
+            else if(optFilter=='dottrue'){
+                return (att.dot=='1');}
+            }
+
+        function stylefmbpoly(feature){
+            var att=feature.properties;
+            var optFilter=$('#aplandfmb').val();
+
+            if(att.pata=='1'){
+                var clrNest='green';
+                }
+
+            else if(att.govt=='1'){
+                var clrNest='red';
+                }
+
+            else if(att.dot=='1'){
+                var clrNest='yellow';
+                }
+
+            else {
+                var clrNest='lightblue';
+                }
+            return  {color:clrNest};
+            }
+
+        function filteradangauser(json){
+            var att=json.properties;
+            var optFilter=$('#adangaluserfilter').val();
+
+
+            if(optFilter=='ALL'){
+                return true;
+                }
+
+
+            else if(optFilter=='aruna'){
+                return (att.user=='aruna');
+                }
+
+            else if(optFilter=='narayana'){
+                return (att.user=='narayana');
+                }
+            }
+
+
+
+
+
+
+
+    </script>
+
+
+
+
+
+
+
+    <div id="side-bar">
+        <button id="btnform1610202001" class="btn btn-primary btn-block">Top16102020 Show Form(AP Land FMB(Govt/Dot/Pata)</button><br>
+        <div id="div1610202001" class="col-12">
+            <center>
+                <div class="row-12">
+                    <select name="aplandfmb" id="aplandfmb">
+                        <option value="ALL">ALL</option>
+                        <option value="patatrue">patatrue</option>
+                        <option value="govttrue">govttrue</option>
+                        <option value="dottrue">dottrue</option>
+                        </select>
+                    </div>
+                </center><br><br>
+            </div>
+
+        <button id="btnform1610202002" class="btn btn-primary btn-block">Top1610202002 Adangal user Filter(Existing)</button><br>
+        <div id="div1610202002" class="col-12">
+            <center>
+                <div class="row-12">
+                    <select name="adangaluserfilter" id="adangaluserfilter">
+                        <option value="ALL">ALL</option>
+
+
+                        <option value="giri">giri</option>
+                        <option value="aruna">aruna</option>
+                      <option value="narayana">narayana</option>
+                        </select>
+                    </div>
+                </center><br><br>
+            </div>
+        </div>
+
+
+
+</body>
+</html>
